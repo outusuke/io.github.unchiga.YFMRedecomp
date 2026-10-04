@@ -1,0 +1,50 @@
+app-id: io.github.unchiga.YFMRedecomp
+runtime: org.freedesktop.Platform
+runtime-version: '25.08'
+sdk: org.freedesktop.Sdk
+command: yfm-redecomp
+
+# Prebuilt 32-bit binary; users need the Compat.i386 and GL32 extensions installed.
+build-options:
+  strip: false
+  no-debuginfo: true
+
+finish-args:
+  - --allow=multiarch
+  - --share=ipc
+  - --socket=x11
+  - --socket=wayland
+  - --socket=pulseaudio
+  - --device=dri
+  - --device=all  # controllers
+  - --share=network  # in-game update check
+  # The ROM can be anywhere and its path is remembered; narrow this if you prefer.
+  - --filesystem=home:ro
+  - --talk-name=org.freedesktop.portal.Desktop
+
+modules:
+  - name: yfm-redecomp
+    buildsystem: simple
+    build-commands:
+      - install -dm755 /app/lib/yfm-redecomp
+      - cp -r game languages mods sdk /app/lib/yfm-redecomp/
+      - install -m755 memories-pc /app/lib/yfm-redecomp/memories-pc
+      - install -m644 LICENSE README.txt buildid commit /app/lib/yfm-redecomp/
+      - install -Dm755 yfm-redecomp.sh /app/bin/yfm-redecomp
+      - install -Dm644 io.github.unchiga.YFMRedecomp.desktop /app/share/applications/io.github.unchiga.YFMRedecomp.desktop
+      - install -Dm644 io.github.unchiga.YFMRedecomp.metainfo.xml /app/share/metainfo/io.github.unchiga.YFMRedecomp.metainfo.xml
+      - install -Dm644 io.github.unchiga.YFMRedecomp.svg /app/share/icons/hicolor/scalable/apps/io.github.unchiga.YFMRedecomp.svg
+      - install -Dm644 LICENSE /app/share/licenses/io.github.unchiga.YFMRedecomp/LICENSE
+    sources:
+      - type: archive
+        url: https://github.com/Unchiga/Yu-Gi-Oh-Forbidden-Memories-Recompiled/releases/download/v0.2.0/yfm-redecomp-v0.2.0-linux.tar.gz
+        sha256: c6dfa734174ef1432ba5cb4b085f3a59a6d4e53bdd4763db249f2e4c897fde68
+        strip-components: 1
+      - type: file
+        path: yfm-redecomp.sh
+      - type: file
+        path: io.github.unchiga.YFMRedecomp.desktop
+      - type: file
+        path: io.github.unchiga.YFMRedecomp.metainfo.xml
+      - type: file
+        path: io.github.unchiga.YFMRedecomp.svg

@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=YFM Re-Decomp
+GenericName=Yu-Gi-Oh! Forbidden Memories (native PC port)
+Comment=Native PC port of Yu-Gi-Oh! Forbidden Memories rebuilt from the decompilation
+Exec=yfm-redecomp
+Icon=io.github.unchiga.YFMRedecomp
+Terminal=false
+Categories=Game;CardGame;
+Keywords=yugioh;forbidden memories;cards;

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component type="desktop-application">
+  <id>io.github.unchiga.YFMRedecomp</id>
+  <name>YFM Re-Decomp</name>
+  <summary>Native PC port of Yu-Gi-Oh! Forbidden Memories</summary>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>MIT</project_license>
+  <developer_name>Unchiga and contributors</developer_name>
+  <description>
+    <p>A native PC version of Yu-Gi-Oh! Forbidden Memories (PlayStation, USA), rebuilt from the decompiled game. It is a work in progress.</p>
+    <p>You need your own raw disc image (.bin, MODE2/2352, USA SLUS-01411). No game data is included.</p>
+  </description>
+  <launchable type="desktop-id">io.github.unchiga.YFMRedecomp.desktop</launchable>
+  <url type="homepage">https://github.com/Unchiga/Yu-Gi-Oh-Forbidden-Memories-Recompiled</url>
+  <url type="bugtracker">https://github.com/Unchiga/Yu-Gi-Oh-Forbidden-Memories-Recompiled/issues</url>
+  <categories><category>Game</category></categories>
+  <content_rating type="oars-1.1"><content_attribute id="violence-cartoon">mild</content_attribute></content_rating>
+  <releases>
+    <release version="0.2.0" date="2026-10-03"/>
+  </releases>
+</component>
