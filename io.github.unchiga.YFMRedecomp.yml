@@ -18,9 +18,6 @@ finish-args:
   - --device=dri
   - --device=all  # controllers
   - --share=network  # in-game update check
-  # The ROM can be anywhere and its path is remembered; narrow this if you prefer.
-  - --filesystem=home:ro
-  - --talk-name=org.freedesktop.portal.Desktop
 
 modules:
   - name: yfm-redecomp
