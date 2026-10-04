@@ -1,0 +1,67 @@
+name: CI
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - 'v*'
+      - '*.*.*'
+jobs:
+  build:
+    name: "Build Flatpak"
+    runs-on: ubuntu-latest
+    container:
+      image: ghcr.io/flathub-infra/flatpak-github-actions:freedesktop-25.08
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v4
+      - name: Pin sha256 of upstream YFM Re-Decomp release
+        run: |
+          URL=$(grep -m1 'url:' io.github.unchiga.YFMRedecomp.yml | awk '{print $NF}')
+          SHA=$(curl -fsSL "$URL" | sha256sum | cut -d' ' -f1)
+          sed -i "s/sha256: .*/sha256: $SHA/" io.github.unchiga.YFMRedecomp.yml
+      - name: Build Flatpak
+        uses: flatpak/flatpak-github-actions/flatpak-builder@v6
+        with:
+          bundle: YFM-Redecomp.flatpak
+          manifest-path: io.github.unchiga.YFMRedecomp.yml
+      - name: Upload temporary artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: flatpak-bundle
+          path: YFM-Redecomp.flatpak
+  release:
+    name: "Publish Release"
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: flatpak-bundle
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: YFM-Redecomp.flatpak
+          generate_release_notes: true
+          body: |
+            Unofficial Flatpak bundle for YFM Re-Decomp (native PC port of Yu-Gi-Oh! Forbidden Memories).
+            You must supply your own raw disc image (.bin) of the USA release (SLUS-01411).
+
+            **One-time setup (the game is 32-bit):**
+            ```bash
+            flatpak install flathub org.freedesktop.Platform.Compat.i386//25.08 org.freedesktop.Platform.GL32.default//25.08
+            ```
+
+            **First install:**
+            ```bash
+            flatpak install --user YFM-Redecomp.flatpak
+            flatpak run io.github.unchiga.YFMRedecomp
+            ```
+
+            **Already installed? Update to this version:**
+            ```bash
+            flatpak install --user --reinstall YFM-Redecomp.flatpak
+            ```
